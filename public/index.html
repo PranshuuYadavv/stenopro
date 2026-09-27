@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StenoPro — Student Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- AUTH -->
+<section id="authView" class="auth-shell">
+  <div class="auth-brand"><span class="logo">S</span><span>Steno<span>Pro</span></span></div>
+  <div class="auth-card">
+    <div class="auth-tabs"><button class="auth-tab active" data-auth="login">Login</button><button class="auth-tab" data-auth="register">Create account</button></div>
+    <h1 id="authTitle">Welcome back</h1>
+    <p id="authSub">अपने practice dashboard में प्रवेश करें।</p>
+    <form id="authForm">
+      <label>Name<input id="authName" placeholder="आपका नाम"></label>
+      <label>Email<input id="authEmail" type="email" placeholder="you@example.com" required></label>
+      <label>Password<input id="authPassword" type="password" placeholder="••••••••" required></label>
+      <button class="btn primary full" type="submit" id="authSubmit">Login</button>
+    </form>
+    <small class="demo-note">Demo mode: account data इस browser में localStorage में save होगा।</small>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="appView" class="app hidden">
+  <aside class="sidebar">
+    <div class="side-brand"><span class="logo">S</span><span>Steno<span>Pro</span></span></div>
+    <nav>
+      <button class="nav-item active" data-page="dashboard">⌂ <span>Dashboard</span></button>
+      <button class="nav-item" data-page="dictations">◉ <span>Dictation Library</span></button>
+      <button class="nav-item" data-page="tests">⚡ <span>Mock Tests</span></button>
+      <button class="nav-item" data-page="history">▤ <span>Test History</span></button>
+      <button class="nav-item" data-page="admin">⬆ <span>Admin Audio</span></button>
+    </nav>
+    <div class="side-bottom">
+      <button class="nav-item" data-page="profile">⚙ <span>Profile</span></button>
+      <button id="logoutBtn" class="logout">↪ Logout</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="mobile-head">
+      <div class="side-brand"><span class="logo">S</span> StenoPro</div>
+      <button id="mobileMenu">☰</button>
+    </header>
+
+    <div id="page-dashboard" class="page">
+      <div class="page-head"><div><span class="eyebrow">STUDENT DASHBOARD</span><h1>Good practice, <span id="helloName">Student</span> 👋</h1><p>आज अपनी shorthand speed improve करें।</p></div><button class="btn primary" data-page-jump="dictations">Start Practice →</button></div>
+      <div class="stat-grid">
+        <div class="stat"><span>Best WPM</span><strong id="bestWpm">0</strong><small>आपका best result</small></div>
+        <div class="stat"><span>Avg. Accuracy</span><strong id="avgAccuracy">—</strong><small>completed tests</small></div>
+        <div class="stat"><span>Tests Done</span><strong id="testsDone">0</strong><small>all time</small></div>
+        <div class="stat"><span>Practice Streak</span><strong id="streak">0 🔥</strong><small>days</small></div>
+      </div>
+      <div class="dashboard-grid">
+        <section class="panel">
+          <div class="panel-head"><div><span class="eyebrow">RECOMMENDED</span><h2>Continue practice</h2></div><button class="text-btn" data-page-jump="dictations">View all</button></div>
+          <div id="recommended"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><span class="eyebrow">RECENT</span><h2>Latest results</h2></div><button class="text-btn" data-page-jump="history">History</button></div>
+          <div id="recentResults"></div>
+        </section>
+      </div>
+    </div>
+
+    <div id="page-dictations" class="page hidden">
+      <div class="page-head"><div><span class="eyebrow">DICTATION LIBRARY</span><h1>Choose your practice</h1><p>Speed और language के अनुसार dictation चुनें।</p></div></div>
+      <div class="filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="English">English</button><button class="filter" data-filter="Hindi">Hindi</button><span></span><select id="speedFilter"><option value="all">All speeds</option><option>60</option><option>80</option><option>100</option><option>120</option></select></div>
+      <div id="dictationGrid" class="dictation-grid"></div>
+    </div>
+
+    <div id="page-tests" class="page hidden">
+      <div class="page-head"><div><span class="eyebrow">MOCK TESTS</span><h1>Exam-style tests</h1><p>Timer के साथ transcription skill check करें।</p></div></div>
+      <div class="test-grid">
+        <article class="test-card"><div class="test-icon">⚡</div><span class="tag">80 WPM</span><h2>SSC Steno Practice</h2><p>3-minute demo test with instant scoring.</p><button class="btn primary" data-test="80">Start Test</button></article>
+        <article class="test-card"><div class="test-icon">🔥</div><span class="tag">100 WPM</span><h2>Advanced Skill Test</h2><p>Fast-paced transcription challenge.</p><button class="btn primary" data-test="100">Start Test</button></article>
+        <article class="test-card"><div class="test-icon">🏆</div><span class="tag">120 WPM</span><h2>Challenge Test</h2><p>Push your speed with a harder passage.</p><button class="btn primary" data-test="120">Start Test</button></article>
+      </div>
+    </div>
+
+    <div id="page-history" class="page hidden">
+      <div class="page-head"><div><span class="eyebrow">PERFORMANCE</span><h1>Test History</h1><p>अपने completed practice sessions देखें।</p></div></div>
+      <section class="panel"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Dictation</th><th>Target</th><th>WPM</th><th>Accuracy</th><th>Errors</th></tr></thead><tbody id="historyBody"></tbody></table></div></section>
+    </div>
+
+    <div id="page-profile" class="page hidden">
+      <div class="page-head"><div><span class="eyebrow">ACCOUNT</span><h1>Your Profile</h1><p>Basic student information.</p></div></div>
+      <section class="panel profile-panel"><div class="avatar" id="profileAvatar">S</div><div><h2 id="profileName">Student</h2><p id="profileEmail">student@example.com</p></div><button id="clearData" class="btn danger">Reset local data</button></section>
+    </div>
+
+
+    <div id="page-admin" class="page hidden">
+      <div class="page-head">
+        <div><span class="eyebrow">ADMIN PANEL</span><h1>MP3 Dictation Manager</h1><p>नई audio dictations upload और manage करें।</p></div>
+      </div>
+      <section class="panel upload-panel">
+        <div class="upload-head">
+          <div><div class="upload-icon">🎧</div><div><h2>Upload new dictation</h2><p>MP3 audio + passage details जोड़ें।</p></div></div>
+          <span class="tag">SERVER</span>
+        </div>
+        <form id="audioForm" class="audio-form">
+          <label>Dictation Title<input id="audioTitle" required placeholder="जैसे SSC English Dictation 01"></label>
+          <label>Language<select id="audioLang"><option>English</option><option>Hindi</option></select></label>
+          <label>Target WPM<select id="audioWpm"><option>60</option><option selected>80</option><option>100</option><option>120</option></select></label>
+          <label>Duration (minutes)<input id="audioDuration" type="number" min="1" max="60" value="3" required></label>
+          <label class="wide">Transcription / Answer Passage<textarea id="audioPassage" required placeholder="इस audio का exact transcription यहाँ लिखें..."></textarea></label>
+          <label class="wide file-drop">MP3 File<input id="audioFile" type="file" accept="audio/mpeg,.mp3" required><small id="fileName">MP3 file चुनें</small></label>
+          <button class="btn primary wide" type="submit">⬆ Upload Dictation</button>
+        </form>
+        <div id="adminAudioList" class="admin-audio-list"></div>
+      </section>
+    </div>
+
+    <!-- TEST RUNNER -->
+    <div id="runner" class="runner hidden">
+      <div class="runner-top"><button id="closeRunner" class="back">← Exit</button><div><b id="runnerTitle">Dictation Test</b><small id="runnerMeta">80 WPM • English</small></div><div class="timer-box" id="testTimer">03:00</div></div>
+      <div class="runner-body">
+        <div class="audio-panel" id="audioPanel">
+          <div class="audio-circle" id="audioCircle">▶</div>
+          <h2 id="runnerDictationTitle">English Dictation</h2>
+          <p id="runnerInstruction">Play the demo audio/timer, then type the passage in the transcription box.</p>
+          <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="runner-note">🔊 Server MP3 mode: audio और scoring data अब backend से आते हैं।</div>
+        </div>
+        <div class="typing-panel">
+          <div class="label-row"><b>Transcription</b><span id="runnerWordCount">0 words</span></div>
+          <textarea id="runnerText" spellcheck="false" placeholder="यहाँ सुनी हुई dictation type करें..."></textarea>
+          <div class="runner-actions"><button id="submitTest" class="btn primary">Submit & See Result</button></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- RESULT MODAL -->
+<div id="resultModal" class="modal hidden"><div class="result-card"><button id="closeResult" class="modal-close">×</button><span class="eyebrow">RESULT</span><h2>Practice complete 🎉</h2><div class="result-grid"><div><strong id="rWpm">0</strong><span>WPM</span></div><div><strong id="rAcc">0%</strong><span>Accuracy</span></div><div><strong id="rErr">0</strong><span>Errors</span></div><div><strong id="rWords">0</strong><span>Typed Words</span></div></div><div id="resultMessage" class="result-message"></div><button id="resultAgain" class="btn primary">Practice Again</button></div></div>
+
+<script src="app.js"></script>
+</body>
+</html>

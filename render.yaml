@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: stenopro
+    runtime: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: MAX_AUDIO_MB
+        value: "50"
+    disk:
+      name: stenopro-data
+      mountPath: /app
+      sizeGB: 1
